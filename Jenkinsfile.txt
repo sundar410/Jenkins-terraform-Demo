@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+     
+   
+      tools {
+         terraform 'terraform'
+        
+
+    }
+    
+   
+
+    stages {
+      stage('fetch_latest_code') {
+        steps {
+          git branch: 'main', credentialsId: 'github', url: ' https://github.com/sundar410/Jenkins-terraform-Demo.git'
+        }
+      }
+      stage('TF Init&Plan') {
+        steps {
+          sh 'terraform init'
+          sh 'terraform plan'
+        }      
+      }
+      
+      stage('TF Apply') {
+        steps {
+          sh 'terraform apply -auto-approve'
+        }
+      }
+     
+       stage('TF Destroy approval') {
+        steps {
+          
+          script {
+
+           def userInput = input id: 'Apply or Destroy', message: 'Apply Terrraform or Destroy ?', parameters: [booleanParam(defaultValue: false, description: 'Apply', name: 'Apply or Destroy')]
+        }
+      }
+       }
+      stage('TF Destroy') {
+        steps {
+          sh 'terraform destroy -auto-approve'
+        }
+      }
+          
+    } 
+    
+  }
