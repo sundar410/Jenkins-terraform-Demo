@@ -30,7 +30,7 @@ resource "aws_eip_association" "eip_assoc" {
 resource "aws_security_group" "allow_tls" {
   name        = "allow_tls"
   description = "Allow TLS inbound traffic"
-  vpc_id      = "vpc-18f2e670"
+  vpc_id      = "vpc-72a6a41a"
   ingress {
     description = "TLS from VPC"
     from_port   = 443
